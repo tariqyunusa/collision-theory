@@ -1,4 +1,5 @@
 import utils from './utils'
+import { distance } from './utils'
 
 const canvas = document.querySelector('canvas')
 const c = canvas.getContext('2d')
@@ -7,8 +8,8 @@ canvas.width = innerWidth
 canvas.height = innerHeight
 
 const mouse = {
-  x: innerWidth / 2,
-  y: innerHeight / 2
+  x: 10,
+  y: 10
 }
 
 const colors = ['#2185C5', '#7ECEFD', '#FFF6E5', '#FF7F66']
@@ -26,8 +27,9 @@ addEventListener('resize', () => {
   init()
 })
 
+
 // Objects
-class Object {
+class Circle {
   constructor(x, y, radius, color) {
     this.x = x
     this.y = y
@@ -49,25 +51,30 @@ class Object {
 }
 
 // Implementation
-let objects
+let circle1 
+let circle2 
 function init() {
-  objects = []
-
-  for (let i = 0; i < 400; i++) {
-    // objects.push()
-  }
+  circle1 =  new Circle(300, 300, 100, 'black')
+  circle2 =  new Circle(undefined, undefined, 30, 'red')
 }
 
 // Animation Loop
 function animate() {
   requestAnimationFrame(animate)
   c.clearRect(0, 0, canvas.width, canvas.height)
+  circle2.x = mouse.x
+  circle2.y = mouse.y
+  circle1.update()
+  circle2.update()
 
-  c.fillText('HTML CANVAS BOILERPLATE', mouse.x, mouse.y)
-  // objects.forEach(object => {
-  //  object.update()
-  // })
+  if(distance(circle1.x, circle1.y, circle2.x, circle2.y) < circle1.radius + circle2.radius){
+    circle1.color = "red"
+  }
+  else {
+    circle1.color = "black"
+  }
+// console.log(distance(circle1.x, circle1.y, circle2.x, circle2.y) < circle1.radius + circle2.radius );
+  
 }
-
 init()
 animate()
